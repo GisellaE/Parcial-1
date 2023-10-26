@@ -1,0 +1,73 @@
+<%- include('../layouts/header',{title: 'Computer list'}); -%>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="alert alert-success text-center">computer list</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Ram</th>
+                            <th scope="col">Almacenamiento</th>
+                            <th scope="col">Año</th>
+                            <th scope="col">Sn</th>
+                            <th scope="col">Cpu</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Precio</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% computers.map( computer => { %>
+                            <tr>
+                                <th scope="row"><%= computers.id %></th>
+                                <td><%= computers.Marca%></td>
+                                <td><%= computers.ram %></td>
+                                <td><%= computers.Almacenamiento %></td>
+                                <td><%= computers.cpu %></td>
+                                <td><%= computers.Año %></td>
+                                <td><%= computers.Sn %></td>
+                                <td><%= computers.Modelo %></td>
+                                <td><%= computers.Precio %></td>
+                                <td>
+                                
+                                
+
+
+
+                                  <form action="/computers/Delete/<%=computer.id%>" method="post"
+                                    onsubmit= "return confirm('Está seguro de eliminar?');"
+                                    >
+                                
+
+                                  <button type="submit"  class="btn btn-danger">eliminar</button>
+                                </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-grid">
+                <a href="/carros/create" class="btn btn-outline-secondary">
+                    Crear un nuevo computador
+                </a>
+            </div>
+        </div>
+        <br>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="¿Qué carro estas buscando?" aria-label="Search" id="search">
+            <button class="btn btn-outline-success" type="submit" id="btnBuscar">Buscar</button>
+          </form>
+
+    </div>
+
+    <%- include('../layouts/footer'); -%>
+   
