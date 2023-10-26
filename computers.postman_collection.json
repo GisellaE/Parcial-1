@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "05edc789-af7e-4c5b-ab38-a536901a3831",
+		"name": "computers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29903688"
+	},
+	"item": [
+		{
+			"name": "listar computadores",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/computers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"computers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/computers/41bd5408-928e-4612-9c34-06f7b5072277",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"computers",
+						"41bd5408-928e-4612-9c34-06f7b5072277"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar nv computer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"Marca\": 123,\r\n  \"Model\": \"Pavilion x360\",\r\n  \"Sn\": \"ABC123XYZ\",\r\n  \"cpu\": \"Intel Core i5\",\r\n  \"ram\": \"8 GB\",\r\n  \"almacenamiento\": [\"256 GB SSD\", \"1 TB HDD\"],\r\n  \"año\": \"2022-01-15T00:00:00Z\",\r\n  \"precio\": 899.99\r\n\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/computers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"computers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update computer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Almacenamiento\":  [\r\n        \"512GB SSD\",\r\n        \"1T SSD\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/computers/d03ea3a3-fed4-44d4-afb3-61118c62b602",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"computers",
+						"d03ea3a3-fed4-44d4-afb3-61118c62b602"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar comp",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/computers/1b920f8f-1f81-48dc-a9eb-044dd1ecd01a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"computers",
+						"1b920f8f-1f81-48dc-a9eb-044dd1ecd01a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
