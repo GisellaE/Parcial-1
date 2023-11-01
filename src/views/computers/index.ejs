@@ -1,4 +1,4 @@
-<%- include('../layouts/header',{title: 'Computer list'}); -%>
+%- include('../layouts/header',{title: 'Computer list'}); -%>
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -25,15 +25,15 @@
                     <tbody>
                         <% computers.map( computer => { %>
                             <tr>
-                                <th scope="row"><%= computers.id %></th>
-                                <td><%= computers.Marca%></td>
-                                <td><%= computers.ram %></td>
-                                <td><%= computers.Almacenamiento %></td>
-                                <td><%= computers.cpu %></td>
-                                <td><%= computers.Año %></td>
-                                <td><%= computers.Sn %></td>
-                                <td><%= computers.Modelo %></td>
-                                <td><%= computers.Precio %></td>
+                                <th scope="row"><%= computer.id %></th>
+                                <td><%= computer.Marca%></td>
+                                <td><%= computer.ram %></td>
+                                <td><%= computer.Almacenamiento %></td>
+                                <td><%= computer.Año %></td>
+                                <td><%= computer.Sn %></td>
+                                <td><%= computer.cpu %></td>
+                                <td><%= computer.Modelo %></td>
+                                <td><%= computer.Precio %></td>
                                 <td>
                                 
                                 
@@ -56,14 +56,14 @@
         </div>
         <div class="row">
             <div class="col-12 d-grid">
-                <a href="/carros/create" class="btn btn-outline-secondary">
+                <a href="/computers/create" class="btn btn-outline-secondary">
                     Crear un nuevo computador
                 </a>
             </div>
         </div>
         <br>
         <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="¿Qué carro estas buscando?" aria-label="Search" id="search">
+            <input class="form-control me-2" type="search" placeholder="¿Qué Computador estas buscando?" aria-label="Search" id="search">
             <button class="btn btn-outline-success" type="submit" id="btnBuscar">Buscar</button>
           </form>
 
