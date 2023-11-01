@@ -58,6 +58,28 @@ app.get('/computers/create', (req,res) =>{
     //Mostrar el formulario
     res.render('computers/create');
 })
+
+//eliminar computador
+app.post('/computers/delete/:id', (req, res) => {
+    console.log(req.params.id);
+    //Guardar el ID
+    const id = req.params.id
+    //Leer el contenido del archivo
+    const computers = readFile(FILE_NAME)
+    // Buscar la mascota con el ID que recibimos
+    const ComputerIndex = computers.findIndex(computer => computer.id === id )
+    if( ComputerIndex < 0 ){// Si no se encuentra la mascota con ese ID
+        res.status(404).json({'ok': false, message:"Pet not found"});
+        return;
+    }
+    //Eliminar la mascota que esté en la posición petIndex
+    computers.splice(ComputerIndex, 1);
+    writeFile(FILE_NAME, computers)
+    res.redirect('/computers');
+})
+
+
+
 //Crear Computador
 app.post('/computers',validatorHandler(createComputerSchema, "body"), async (req, res) => {
     try{
@@ -72,7 +94,8 @@ app.post('/computers',validatorHandler(createComputerSchema, "body"), async (req
   //escribir en el archivo
 
   writeFile(FILE_NAME, data);
-  res.json({message: 'El computador fue creado'});
+    //res.json({message: 'El computador fue creado'});
+    res.redirect('/computers');
   }catch (error){
       console.error(error);
       res.json({message: ' Error al almacenar '});
@@ -193,6 +216,10 @@ app.listen(3000, () => {
 
 
     
+
+
+
+
 
 
 
