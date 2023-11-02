@@ -7,7 +7,7 @@ const Modelo = Joi.string().min(1).max(100);
 const Sn = Joi.string().min(1).max(100);
 const cpu = Joi.string().min(1).max(50);
 const ram = Joi.string().min(1).max(100);
-const almacenamiento = Joi.array().items(Joi.string()).min(1).max(100);
+const almacenamiento = /* Joi.array().items( */Joi.string()/* ) */.min(1).max(100);
 const año = Joi.date();
 const precio = Joi.number().precision(2).min(0);
 
@@ -15,7 +15,7 @@ const precio = Joi.number().precision(2).min(0);
 const createComputerSchema = Joi.object({
     Marca: Marca.required(),
     Model: Modelo.required(),
-    Sn: Sn.required(),
+    //Sn: Sn.required(),
     cpu: cpu.optional(),
     ram: ram.optional(),
     almacenamiento: almacenamiento.required(),
@@ -27,7 +27,7 @@ const createComputerSchema = Joi.object({
 const updateComputerSchema = Joi.object({ 
     Marca: Marca.optional(),
     Model: Modelo.optional(),
-    Sn: Sn.optional(),
+    //Sn: Sn.optional(),
     cpu: cpu.optional(),
     ram: ram.optional(),
     almacenamiento: almacenamiento.optional(),
