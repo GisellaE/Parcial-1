@@ -10,9 +10,9 @@ const {
 const express = require('express');
 const fs = require('fs');
 const {v4: uuidv4} = require('uuid');
-const moment = require('moment')
-const time = moment().format('YYYY-MM-DD HH:mm:ss')
-const log = JSON.parse(fs.readFileSync('access_log.json', 'utf8'))
+//const moment = require('moment')
+//const time = moment().format('YYYY-MM-DD HH:mm:ss')
+//const log = JSON.parse(fs.readFileSync('access_log.json', 'utf8'))
 
 
 //Modulos internos
@@ -24,7 +24,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const APP_NAME = process.env.APP_NAME || 'My App';
 const FILE_NAME = './db/computers.txt';
-const FILE_NAME_ACCESS = "./db/acces.json";
+
 
 
 //Middleware
@@ -48,9 +48,9 @@ app.get('/computers', (req, res)=>{
     const data = readFile(FILE_NAME);
     res.render('computers/index', { computers: data });
 
-    log.insert_request_dates.push(
-        new_record = {"date": time})
-        fs.writeFileSync('access_log.json', JSON.stringify(log))
+    //log.insert_request_dates.push(
+        //new_record = {"date": time})
+        //fs.writeFileSync('access_log.json', JSON.stringify(log))
 });
 
 
@@ -159,7 +159,33 @@ app.get('/computers', (req, res) => {
   });
   
 
- 
+  app.get('/computers/pdf/:id', (req, res) => {
+    const id = req.params.id;
+    const computers = readFile(FILE_NAME);
+    const computer = computers.find((c) => c.id === id);
+  
+    if (!computer) {
+      return res.status(404).json({ message: 'Computer not found' });
+    }
+  
+    // Crear un nuevo documento PDF
+    const doc = new PDFDocument();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${computer.id}.pdf`);
+  
+    // Agregar contenido al PDF
+    doc.pipe(res);
+    doc.font('Helvetica-Bold');
+    doc.fontSize(20).text('Detalle del Computador', { align: 'center' });
+  
+    doc.fontSize(14).text(`ID: ${computer.id}`);
+    doc.text(`Marca: ${computer.Marca}`);
+    doc.text(`Modelo: ${computer.Modelo}`);
+    // Agregar más detalles según tu modelo de datos
+  
+    doc.end();
+  });
+  
   
 
 //Actualizar un computador
@@ -209,6 +235,100 @@ app.delete('/computers/:id',validatorHandler(getComputerSchema, "params"), async
     res.json({'ok': true});
 })
 
+app.get('/computers', async (req, res) => {
+    const data = readFile(FILE_NAME);
+    res.json(data);
+})
+
+//API
+//Crear Computador
+app.post('/computers',validatorHandler(createComputerSchema, "body"), async (req, res) => {
+    try{
+        //leer archivo de computadores
+  const data = readFile(FILE_NAME);
+  //agregar nuevo computador
+  const newComputer = req.body;
+  newComputer.id = uuidv4();
+  console.log (newComputer)
+  data.push(newComputer);//agregar nuevo elemento
+
+  //escribir en el archivo
+
+  writeFile(FILE_NAME, data);
+  res.json({message: 'El computador fue creado'});
+  }catch (error){
+      console.error(error);
+      res.json({message: ' Error al almacenar '});
+  }
+
+});
+
+//Obtener un solo computador (usamos los dos puntos por que es un path param)
+app.get('/computers/:id', validatorHandler(getComputerSchema,"params" ), async(req, res) =>{
+    console.log(req.params.id);
+    //guardar el ID
+    const id = req.params.id
+    //leer el contenido del archivo
+    const computers = readFile(FILE_NAME)
+    //Buscar el computador con el ID que recibimos por la url
+    const computersFound = computers.find(computer => computer.id === id)
+    if(!computersFound){
+        res.status(404).json({'ok': false, message: "computer not found"})
+    }
+
+    res.send({'ok': true, computer: computersFound});
+})
+
+//Actualizar un computador
+app.put('/computers/:id', validatorHandler(updateComputerSchema,"body" ), async(req, res) =>{
+    console.log(req.params.id);
+    //guardar el ID
+    const id = req.params.id
+    //leer el contenido del archivo
+    const computers = readFile(FILE_NAME)
+    //Buscar el computador con el ID que recibimos por la url
+    const computerIndex = computers.findIndex(computer => computer.id === id)
+    if(computerIndex <0){ // Si no se encuentra la mascota con ese id 
+
+        res.status(404).json({'ok': false, message: "computer not found"})
+        return;
+    
+    }
+    let computer = computers[computerIndex]; // Sacar del arrelgo
+    computer = {...computer, ...req.body }
+    computers[computerIndex] = computer //poner el computador en el mismo lugar 
+    writeFile(FILE_NAME, computers);
+
+
+    //si el computador existe, modificar sus datos y almacenarlo nuevamente
+
+    res.send({'ok': true, computer: computer});
+})
+
+//Eliminar un computador
+app.delete('/computers/:id',validatorHandler(getComputerSchema, "params"), async (req, res) =>{
+    console.log(req.params.id);
+    //guardar el ID
+    const id = req.params.id
+    //leer el contenido del archivo
+    const computers = readFile(FILE_NAME)
+    //Buscar el computador con el ID que recibimos por la url
+    const computerIndex = computers.findIndex(computer => computer.id === id)
+    if(computerIndex <0 ){ //si no se encuentra el computador con ese id
+        res.status(404).json({'ok': false, message: "computer not found"})
+        return;
+    }
+    //eliminar el computador que este en posicion computerIndex
+    computers.splice (computerIndex, 1)
+    writeFile (FILE_NAME, computers)
+
+
+    res.json({'ok': true});
+})
+
+
+
+
 
 app.listen(3000, () => {
     console.log(`Server is running on http://localhost:3000`);
@@ -216,6 +336,10 @@ app.listen(3000, () => {
 
 
     
+
+
+
+
 
 
 
